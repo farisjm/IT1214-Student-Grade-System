@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 class Student {
     private String studentID;
     private String studentName;

@@ -14,7 +14,7 @@ This is a Java console-based application developed to manage student academic re
 
  How to Run
 
-1. Open the project in any Java IDE (Eclipse / IntelliJ / VS Code)
+1. Open the project in any Java IDE 
 2. Compile the program
 3. Run the "StudentGradingSystem.java" file
 4. Use the menu to perform operations

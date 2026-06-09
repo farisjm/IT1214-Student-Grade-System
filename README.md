@@ -1,20 +1,30 @@
-# IT1214-Student-Grade-System
-Student Grade Management System
+# IT1214 Student Grade Management System
 
- Project Purpose
+## 📌 Project Purpose
+This project is a Java console-based Student Grade Management System developed using Object-Oriented Programming (OOP). It helps teachers manage student records digitally instead of manual paper-based systems.
 
-This is a Java console-based application developed to manage student academic records digitally. It replaces manual paper-based systems and allows teachers to efficiently store and manage student data.
-
- Features
-
-- Add student details (ID, Name, Marks)
+## 📌 Features
+- Add student records
 - Display all students
 - Search student by ID
-- Calculate average marks
+- Calculate individual and overall average marks
 
- How to Run
+## 📌 How to Run
+1. Open project in any Java IDE (Eclipse / IntelliJ / NetBeans)
+2. Compile all `.java` files
+3. Run `Main.java`
+4. Use menu options in console
 
-1. Open the project in any Java IDE 
-2. Compile the program
-3. Run the "StudentGradingSystem.java" file
-4. Use the menu to perform operations
+## 📌 Technologies Used
+- Java
+- OOP Concepts
+- ArrayList
+- GitHub Version Control
+
+## 📌 GitHub Usage
+This project includes multiple commits showing development stages:
+- Initial setup
+- Student class creation
+- Input functionality
+- Search & average logic
+- Final testing

@@ -1,100 +1,181 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
-class Student {
-    String id;
-    String name;
-    double marks;
-
-    Student(String id, String name, double marks) {
-        this.id = id;
-        this.name = name;
-        this.marks = marks;
-    }
-}
 
 public class StudentGradeManagementSystem {
 
-    static Student[] students = new Student[100];
-    static int count = 0;
+    private static ArrayList<Student> studentList = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
 
-    public static void addStudent(Scanner sc) {
-        System.out.print("Enter ID: ");
-        String id = sc.nextLine();
+    public static void main(String[] args) {
+        System.out.println("==================================================");
+        System.out.println("    STUDENT GRADE MANAGEMENT SYSTEM");
+        System.out.println("    University of Vavuniya");
+        System.out.println("==================================================");
 
-        System.out.print("Enter Name: ");
-        String name = sc.nextLine();
+        int choice;
 
-        System.out.print("Enter Marks: ");
-        double marks = sc.nextDouble();
-        sc.nextLine();
+        do {
+            printMenu();
+            choice = getIntInput("Enter your choice: ");
 
-        students[count++] = new Student(id, name, marks);
-        System.out.println("Student Added!");
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+                case 2:
+                    displayAllStudents();
+                    break;
+                case 3:
+                    searchStudentById();
+                    break;
+                case 4:
+                    calculateAverageMark();
+                    break;
+                case 5:
+                    System.out.println("\n  Exiting system. Goodbye!");
+                    System.out.println("==================================================");
+                    break;
+                default:
+                    System.out.println("\n  [!] Invalid choice. Please enter a number between 1 and 5.");
+            }
+
+        } while (choice != 5);
+
+        scanner.close();
     }
 
-    public static void searchStudent(Scanner sc) {
-        System.out.print("Enter ID: ");
-        String id = sc.nextLine();
+    
+    private static void printMenu() {
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("  MAIN MENU");
+        System.out.println("--------------------------------------------------");
+        System.out.println("  1. Add Student");
+        System.out.println("  2. Display All Students");
+        System.out.println("  3. Search Student by ID");
+        System.out.println("  4. Calculate Average Mark");
+        System.out.println("  5. Exit");
+        System.out.println("--------------------------------------------------");
+    }
 
-        for (int i = 0; i < count; i++) {
-            if (students[i].id.equalsIgnoreCase(id)) {
-                System.out.println("Found: " + students[i].name + " - " + students[i].marks);
-                return;
+    
+    private static void addStudent() {
+        System.out.println("\n  [ ADD STUDENT ]");
+
+        System.out.print("  Enter Student ID   : ");
+        String id = scanner.nextLine().trim();
+
+        // Check for duplicate ID
+        if (findStudentById(id) != null) {
+            System.out.println("  [!] A student with ID \"" + id + "\" already exists.");
+            return;
+        }
+
+        System.out.print("  Enter Student Name : ");
+        String name = scanner.nextLine().trim();
+
+        double marks = -1;
+        while (marks < 0 || marks > 100) {
+            marks = getDoubleInput("  Enter Marks (0-100): ");
+            if (marks < 0 || marks > 100) {
+                System.out.println("  [!] Marks must be between 0 and 100.");
             }
         }
 
-        System.out.println("Not Found");
+        Student student = new Student(id, name, marks);
+        studentList.add(student);
+
+        System.out.println("\n  [✓] Student added successfully!");
+        student.displayStudent();
     }
 
-    public static void calculateAverage() {
-        if (count == 0) {
-            System.out.println("No students available.");
+    
+    private static void displayAllStudents() {
+        System.out.println("\n  [ ALL STUDENTS ]");
+
+        if (studentList.isEmpty()) {
+            System.out.println("  [!] No student records found.");
+            return;
+        }
+
+        System.out.println("  Total Students: " + studentList.size());
+        for (Student s : studentList) {
+            s.displayStudent();
+        }
+    }
+
+    
+    private static void searchStudentById() {
+        System.out.println("\n  [ SEARCH STUDENT ]");
+        System.out.print("  Enter Student ID to search: ");
+        String id = scanner.nextLine().trim();
+
+        Student found = findStudentById(id);
+
+        if (found != null) {
+            System.out.println("\n  [✓] Student found:");
+            found.displayStudent();
+        } else {
+            System.out.println("  [!] No student found with ID: " + id);
+        }
+    }
+
+    
+    private static void calculateAverageMark() {
+        System.out.println("\n  [ AVERAGE MARK ]");
+
+        if (studentList.isEmpty()) {
+            System.out.println("  [!] No student records found. Cannot calculate average.");
             return;
         }
 
         double total = 0;
-
-        for (int i = 0; i < count; i++) {
-            total += students[i].marks;
+        for (Student s : studentList) {
+            total += s.getMarks();
         }
 
-        System.out.println("Average: " + (total / count));
+        double average = total / studentList.size();
+
+        System.out.println("--------------------------------------------------");
+        System.out.printf("  Total Students : %d%n", studentList.size());
+        System.out.printf("  Total Marks    : %.2f%n", total);
+        System.out.printf("  Average Mark   : %.2f%n", average);
+        System.out.println("--------------------------------------------------");
     }
 
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-        int choice;
-
-        do {
-            System.out.println("\n1. Add Student");
-            System.out.println("2. Search Student");
-            System.out.println("3. Calculate Average");
-            System.out.println("4. Exit");
-            System.out.print("Enter choice: ");
-
-            choice = sc.nextInt();
-            sc.nextLine();
-
-            switch (choice) {
-                case 1:
-                    addStudent(sc);
-                    break;
-                case 2:
-                    searchStudent(sc);
-                    break;
-                case 3:
-                    calculateAverage();
-                    break;
-                case 4:
-                    System.out.println("Exiting...");
-                    break;
-                default:
-                    System.out.println("Invalid choice");
+   
+    private static Student findStudentById(String id) {
+        for (Student s : studentList) {
+            if (s.getStudentId().equalsIgnoreCase(id)) {
+                return s;
             }
+        }
+        return null;
+    }
 
-        } while (choice != 4);
+    
+    private static int getIntInput(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                int value = Integer.parseInt(scanner.nextLine().trim());
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("  [!] Invalid input. Please enter a whole number.");
+            }
+        }
+    }
 
-        sc.close();
+   
+    private static double getDoubleInput(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                double value = Double.parseDouble(scanner.nextLine().trim());
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("  [!] Invalid input. Please enter a valid number.");
+            }
+        }
     }
 }

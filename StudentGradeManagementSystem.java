@@ -37,3 +37,26 @@ public class StudentGradeManagementSystem {
         System.out.println("Student Grade System Started");
     }
 }
+public static void searchStudent(Scanner sc) {
+    System.out.print("Enter ID: ");
+    String id = sc.nextLine();
+
+    for (int i = 0; i < count; i++) {
+        if (students[i].id.equals(id)) {
+            System.out.println("Found: " + students[i].name);
+            return;
+        }
+    }
+
+    System.out.println("Not Found");
+}
+
+public static void calculateAverage() {
+    double total = 0;
+
+    for (int i = 0; i < count; i++) {
+        total += students[i].marks;
+    }
+
+    System.out.println("Average: " + (total / count));
+}

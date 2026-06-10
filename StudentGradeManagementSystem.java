@@ -60,3 +60,26 @@ public static void calculateAverage() {
 
     System.out.println("Average: " + (total / count));
 }
+public static void main(String[] args) {
+
+    Scanner sc = new Scanner(System.in);
+    int choice;
+
+    do {
+        System.out.println("\n1. Add Student");
+        System.out.println("2. Search Student");
+        System.out.println("3. Calculate Average");
+        System.out.println("4. Exit");
+        System.out.print("Enter choice: ");
+
+        choice = sc.nextInt();
+        sc.nextLine();
+
+        switch (choice) {
+            case 1 -> addStudent(sc);
+            case 2 -> searchStudent(sc);
+            case 3 -> calculateAverage();
+        }
+
+    } while (choice != 4);
+}
